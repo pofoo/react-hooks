@@ -39,11 +39,9 @@ const useClickOutsideRef = <T extends HTMLElement>(
         }   
         // attaching the clickOutsideFn to all the refs in the refList
         useEffect( () => {
-            document.addEventListener( 'mousedown', clickOutsideFn );
-            document.addEventListener( 'touchstart', clickOutsideFn );
+            document.addEventListener( 'pointerdown', clickOutsideFn );
             return () => {
-                document.removeEventListener( 'mousedown', clickOutsideFn );
-                document.removeEventListener( 'touchstart', clickOutsideFn );
+                document.removeEventListener( 'pointerdown', clickOutsideFn );
             }
         }, [] );  
 
