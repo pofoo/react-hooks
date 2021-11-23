@@ -1,4 +1,4 @@
-import useClickOutsideRef from './useClickOutsideRef';
+import useClickOutsideRef from './click-outside';
 
 export {
     useClickOutsideRef,
