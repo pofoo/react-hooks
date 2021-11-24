@@ -1,16 +1,13 @@
 // dependencies
 import { useEffect, useRef, RefObject } from 'react';
 
-/* TYPES */
-type TapEvent = MouseEvent | TouchEvent;
-
 /**
  * Returns refs that calls an onClick function everytime a click is made outside of that HTML Element
  * Defaults to 1 ref returned - all refs are returned in an array
  * numRefs only takes positive numbers
  */
 const useClickOutsideRef = <T extends HTMLElement>( 
-    onClick: ( event: TapEvent ) => void,
+    onClick: ( event: PointerEvent ) => void,
     numRefs: number=1 // this should only be a positive number
     // TO-DO - the generic T right now assumes that all the refs are going to be the same kind of HTMLElement
 ): RefObject<T>[] => {
@@ -23,7 +20,7 @@ const useClickOutsideRef = <T extends HTMLElement>(
             refList.push( useRef<T>( null ) );
         }
 
-        const clickOutsideFn = ( event: TapEvent ): void => {
+        const clickOutsideFn = ( event: PointerEvent ): void => {
             // if the HTMLElement ref is clicked, isClicked will be false
             // by default, we assume the HTMLElement ref is clicked (false)
             let isClicked: boolean = false;
