@@ -22,6 +22,7 @@ const useFocusTrap = <T extends HTMLElement>(
     const { initialFocus='none', tabbableElems='' } = options;
     
     /* HOOKS */
+    //  last focused element BEFORE the focus trap was activated
     const lastFocusedElem = useRef<HTMLElement | null>( null );
 
     /* CONSTANTS */
@@ -58,22 +59,29 @@ const useFocusTrap = <T extends HTMLElement>(
                 const elem = focusableElems[ initialFocus ] as HTMLElement;
                 elem.focus();
             }
+            else if ( initialFocus === 'none' ) {}
+            // incorrect type specified of initialFocus
+            else {
+                throw( `initialFocus must be either the values 'first', 'none', or a number. You specified initialFocus as ${typeof initialFocus}`)
+            }
     
             const handleTab = ( event: KeyboardEvent ) => {
                 if ( event.key === 'Tab' ) {
                     // currently focused element within the document
                     const focusedElement = document.activeElement as HTMLElement;
 
-                    // reaching the last focusable element going forward
-                    if ( !event.shiftKey && focusedElement === lastElement ) {
-                        firstElement.focus();
+                    const focusEvent = ( elem: HTMLElement ) => {
+                        elem.focus();
                         return event.preventDefault();
                     }
-    
+
+                    // reaching the last focusable element going forward
+                    if ( !event.shiftKey && focusedElement === lastElement ) {
+                        focusEvent( firstElement );
+                    }
                     // reaching the first focusable element going backwards
                     if ( event.shiftKey && focusedElement === firstElement ) {
-                        lastElement.focus();
-                        return event.preventDefault();
+                        focusEvent( lastElement );
                     }
                 }
             }
